@@ -1,0 +1,41 @@
+{
+    "name": "mimisk13/pinakas",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mimis K",
+            "email": "mimisk88@gmail.com",
+            "homepage": "https://mimisk.com"
+        }
+    ],
+    "homepage": "https://github.com/mimisk13/pinakas",
+    "keywords": ["Laravel", "Pinakas"],
+    "require": {
+        "illuminate/support": "^10.0|^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0",
+        "orchestra/testbench": "^7.0|^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mimisk13\\Pinakas\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mimisk13\\Pinakas\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mimisk13\\Pinakas\\PinakasServiceProvider"
+            ],
+            "aliases": {
+                "Pinakas": "Mimisk13\\Pinakas\\Facades\\Pinakas"
+            }
+        }
+    }
+}
