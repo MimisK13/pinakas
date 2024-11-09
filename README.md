@@ -17,30 +17,30 @@ composer require mimisk13/pinakas
 ## Usage
 
 ```php
-    $table = (new Pinakas())
-        ->model(User::class)
-        ->columns([
-            Column::make('Id', 'id'),
-            Column::make('Name', 'name'),
-            Column::make('Email', 'email'),
-            Column::make('Created At', 'created_at'),
-        ])
-        ->actions([
-            // SINGLE ACTIONS
+$table = (new Pinakas())
+    ->model(User::class)
+    ->columns([
+        Column::make('Id', 'id'),
+        Column::make('Name', 'name'),
+        Column::make('Email', 'email'),
+        Column::make('Created At', 'created_at'),
+    ])
+    ->actions([
+        // SINGLE ACTIONS
+        ViewAction::make(),
+        EditAction::make(),
+        DeleteAction::make(),
+
+        // GROUP
+        ActionGroup::make([
             ViewAction::make(),
             EditAction::make(),
             DeleteAction::make(),
-
-            // GROUP
-            ActionGroup::make([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
         ])
-        ->bulkActions([
-            DeleteAction::make(),
-        ]);
+    ])
+    ->bulkActions([
+        DeleteAction::make(),
+    ]);
 ```
 
 ## Change log
