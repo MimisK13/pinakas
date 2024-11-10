@@ -85,7 +85,11 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{ $table->links() }}
         </div>
+
+
 
 
 {{--<div class="rounded-lg shadow-sm overflow-hidden">--}}
