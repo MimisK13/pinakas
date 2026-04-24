@@ -1,6 +1,6 @@
 {
     "name": "mimisk/pinakas",
-    "description": ":package_description",
+    "description": "A simple, reusable Laravel table builder package for fast CRUD listings.",
     "license": "MIT",
     "authors": [
         {
