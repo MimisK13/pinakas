@@ -159,38 +159,17 @@
                                             </td>
                                         @endforeach
 
-
-
-
-                                <!--- ACTIONS --->
-
-
-{{--                        @foreach ($table->getActions() as $action)--}}
-{{--                            @if (is_array($action))--}}
-{{--                                @dd('einai array opote einai action group')--}}
-{{--                            @endif--}}
-
-{{--                            @if(! is_array($action))--}}
-{{--                                @dd('den einai array opote einai single action')--}}
-{{--                            @endif--}}
-{{--                        @endforeach--}}
-
-
-
-
                                         @if (!empty($table->getActions()))
                                             <td class="w-1 whitespace-nowrap px-4 py-2 text-right text-sm text-gray-700 {{ $isBordered ? 'border-r border-b border-gray-200 dark:border-gray-700' : '' }} dark:text-gray-200">
-                                                @foreach ($table->getActions() as $action)
-                                                    @if (is_array($action))
-                                                        <div class="flex space-x-2 justify-end">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    @foreach ($table->getActions() as $action)
+                                                        @if (is_array($action))
                                                             @include('pinakas::partials.action-group', ['actionGroup' => $action, 'table' => $table])
-                                                        </div>
-                                                    @endif
-{{--                                        @else--}}
-{{--                                            @include('pinakas::partials.action', ['action' => $action])--}}
-{{--                                            @include('pinakas::partials.action-group', ['actionGroup' => $action])--}}
-{{--                                        @endif--}}
-                                                @endforeach
+                                                        @else
+                                                            @include('pinakas::partials.action', ['action' => $action])
+                                                        @endif
+                                                    @endforeach
+                                                </div>
                                             </td>
                                         @endif
 

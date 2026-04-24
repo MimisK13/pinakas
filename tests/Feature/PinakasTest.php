@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Mimisk\Pinakas\Actions\Action;
+use Mimisk\Pinakas\Actions\ActionGroup;
 use Mimisk\Pinakas\Bulk\BulkAction;
 use Mimisk\Pinakas\Columns\Column;
 use Mimisk\Pinakas\Pinakas;
@@ -135,3 +137,55 @@ it('detects empty state variants from rows and search term', function () {
     expect($table->isSearchEmptyState([]))->toBeFalse()
         ->and($table->isTableEmptyState([]))->toBeTrue();
 });
+
+it('renders single row actions', function () {
+    $table = tableWithRows([(object) ['id' => 1, 'name' => 'Mimis']])
+        ->columns([
+            Column::make('Name', 'name'),
+        ])
+        ->actions([
+            Action::make('Open')->url('/users/1'),
+        ]);
+
+    expect(view('pinakas::table', ['table' => $table])->render())
+        ->toContain('Mimis')
+        ->toContain('href="/users/1"')
+        ->toContain('Open');
+});
+
+it('renders grouped row actions', function () {
+    $table = tableWithRows([(object) ['id' => 1, 'name' => 'Mimis']])
+        ->columns([
+            Column::make('Name', 'name'),
+        ])
+        ->actions([
+            ActionGroup::make([
+                Action::make('View')->url('/users/1'),
+                Action::make('Edit')->url('/users/1/edit'),
+            ]),
+        ]);
+
+    $html = view('pinakas::table', ['table' => $table])->render();
+
+    expect($html)
+        ->toContain('Mimis')
+        ->toContain('href="/users/1"')
+        ->toContain('href="/users/1/edit"')
+        ->toContain('View')
+        ->toContain('Edit');
+});
+
+function tableWithRows(array $rows): Pinakas
+{
+    return new class($rows) extends Pinakas {
+        public function __construct(private array $rows)
+        {
+            parent::__construct();
+        }
+
+        public function getData(): Collection
+        {
+            return new Collection($this->rows);
+        }
+    };
+}
