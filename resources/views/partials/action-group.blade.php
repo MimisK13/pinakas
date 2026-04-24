@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="relative inline-block text-left">
+<div x-data="{ open: false }" x-cloak class="relative inline-block text-left">
     <!-- Dropdown Button -->
     <div>
         <button type="button"
@@ -28,7 +28,7 @@
                         'action' => $action,
                         'row' => $row,
                         'class' => 'group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-700',
-                        'formClass' => 'inline',
+                        'formClass' => 'w-full',
                         'role' => 'menuitem',
                         'tabIndex' => '-1',
                     ])

@@ -50,6 +50,8 @@ All notable changes to `Pinakas` will be documented in this file.
 - Optional column header label in `make()` with auto-generated title from attribute.
 - Single row actions are supported alongside grouped row actions.
 - `Action::route()` and `Action::confirm()` for route-based URLs and confirmation modals.
+- Reusable confirmation modal partial (`partials.confirm-modal`).
+- Reusable package style partial (`partials.styles`) for `x-cloak`.
 - Eloquent integration tests for search, sorting, and pagination.
 
 ### Changed
@@ -65,4 +67,6 @@ All notable changes to `Pinakas` will be documented in this file.
 - Bulk action toolbar now submits selected row IDs with proper method/url and optional confirmation.
 - `DeleteAction` now uses the Laravel-style `*.destroy` route convention.
 - Row `DELETE` actions with confirmation now use the modal confirmation flow before submit.
+- Destructive dropdown actions now render as full-width red destructive items.
+- Row action dropdowns now use `x-cloak` consistently to prevent Alpine initialization flashes.
 - Indigo hardcoded checkbox/pagination accents replaced with global UI accent color.

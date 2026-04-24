@@ -17,7 +17,9 @@ it('loads package config and views', function () {
     $views = app(ViewFactory::class);
 
     expect(config('pinakas.ui.accent_color'))->toBe('amber-600')
-        ->and($views->exists('pinakas::table'))->toBeTrue();
+        ->and($views->exists('pinakas::table'))->toBeTrue()
+        ->and($views->exists('pinakas::partials.confirm-modal'))->toBeTrue()
+        ->and($views->exists('pinakas::partials.styles'))->toBeTrue();
 });
 
 it('resolves configured ui defaults and allows fluent overrides', function () {
@@ -179,6 +181,10 @@ it('renders route actions and destroy actions with confirmation hooks', function
     expect($html)
         ->toContain('href="http://localhost/users/1"')
         ->toContain('action="http://localhost/pinakas-users/1"')
+        ->toContain('class="w-full"')
+        ->toContain('flex w-full items-center justify-start')
+        ->toContain('text-red-600')
+        ->toContain('hover:bg-red-50')
         ->toContain('name="_method" value="DELETE"')
         ->toContain('x-on:submit.prevent.stop')
         ->toContain('Are you sure you want to delete this record?');

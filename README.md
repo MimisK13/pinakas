@@ -22,10 +22,10 @@ Via Composer
 composer require mimisk/pinakas
 ```
 
-Install JS dependency for `el-select`:
+Install JS dependencies for the interactive controls:
 
 ```bash
-npm install @tailwindplus/elements
+npm install alpinejs @tailwindplus/elements
 ```
 
 Publish package JS asset:
@@ -34,16 +34,49 @@ Publish package JS asset:
 php artisan vendor:publish --tag=pinakas-assets
 ```
 
-Import Pinakas JS in your app entrypoint (`resources/js/app.js`):
+Import Alpine and Pinakas JS in your app entrypoint (`resources/js/app.js`):
 
 ```js
+import Alpine from 'alpinejs';
 import './vendor/pinakas/pinakas';
+
+window.Alpine = Alpine;
+Alpine.start();
 ```
 
 Rebuild assets:
 
 ```bash
 npm run build
+```
+
+If your app already starts Alpine (for example through Breeze), only import the
+published Pinakas JS asset once:
+
+```js
+import './vendor/pinakas/pinakas';
+```
+
+For Vite dev servers using a custom local domain, make sure HMR uses the same
+lowercase host as the browser URL. Example:
+
+```js
+// vite.config.js
+export default defineConfig({
+    server: {
+        hmr: {
+            host: 'packages.test',
+        },
+        watch: {
+            ignored: [
+                '**/vendor/**',
+                '**/packages/**/vendor/**',
+                '**/storage/debugbar/**',
+                '**/public/build/**',
+            ],
+        },
+    },
+});
 ```
 
 ## Configuration
@@ -324,6 +357,10 @@ Action::make('Delete')
 ```
 
 `DeleteAction::make()` uses the Laravel-style `*.destroy` route name.
+
+Confirmation modals are rendered by `pinakas::partials.confirm-modal`.
+Pinakas also ships `pinakas::partials.styles` for the required `x-cloak`
+rule, preventing Alpine dropdown/modal flashes while the page initializes.
 
 ### Pagination
 

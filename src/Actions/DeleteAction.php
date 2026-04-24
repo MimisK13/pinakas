@@ -15,7 +15,7 @@ class DeleteAction
                 return route(strtolower($modelName) . '.destroy', [$modelName => $row->id]);
             },
             'method' => 'DELETE',
-            'class' => 'text-red-500 hover:underline',
+            'class' => '',
             'icon' => Icon::delete(),
             'confirm' => 'Are you sure you want to delete this record?',
         ]);
