@@ -1,6 +1,6 @@
 <?php
 
-namespace Mimisk13\Pinakas\Columns;
+namespace Mimisk\Pinakas\Columns;
 
 class IconColumn
 {
@@ -9,7 +9,7 @@ class IconColumn
 
     public static function make($name)
     {
-        $column = new static();
+        $column = new self();
         $column->name = $name;
         return $column;
     }

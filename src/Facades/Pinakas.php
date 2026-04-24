@@ -1,6 +1,6 @@
 <?php
 
-namespace Mimisk13\Pinakas\Facades;
+namespace Mimisk\Pinakas\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

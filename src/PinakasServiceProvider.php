@@ -1,6 +1,6 @@
 <?php
 
-namespace Mimisk13\Pinakas;
+namespace Mimisk\Pinakas;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class PinakasServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'mimisk13');
+        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'mimisk');
          $this->loadViewsFrom(__DIR__.'/../resources/views', 'pinakas');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
@@ -67,13 +67,13 @@ class PinakasServiceProvider extends ServiceProvider
         ], 'pinakas-views');
 
         // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/mimisk13'),
-        ], 'pinakas.assets');*/
+        $this->publishes([
+            __DIR__.'/../resources/js/pinakas.js' => resource_path('js/vendor/pinakas/pinakas.js'),
+        ], 'pinakas-assets');
 
         // Publishing the translation files.
         /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/mimisk13'),
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/mimisk'),
         ], 'pinakas.lang');*/
 
         // Registering package commands.

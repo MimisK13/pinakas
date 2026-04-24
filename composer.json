@@ -1,5 +1,5 @@
 {
-    "name": "mimisk13/pinakas",
+    "name": "mimisk/pinakas",
     "description": ":package_description",
     "license": "MIT",
     "authors": [
@@ -9,33 +9,47 @@
             "homepage": "https://mimisk.com"
         }
     ],
-    "homepage": "https://github.com/mimisk13/pinakas",
+    "homepage": "https://github.com/MimisK13/pinakas",
     "keywords": ["Laravel", "Pinakas"],
     "require": {
-        "illuminate/support": "^10.0|^11.0"
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0|^13.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0|^10.0",
-        "orchestra/testbench": "^7.0|^8.0|^9.0"
+        "larastan/larastan": "^3.0|^4.0",
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "pestphp/pest": "^2.36|^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^2.4|^3.0|^4.0",
+        "phpunit/phpunit": "^10.5|^11.5|^12.5"
     },
     "autoload": {
         "psr-4": {
-            "Mimisk13\\Pinakas\\": "src/"
+            "Mimisk\\Pinakas\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mimisk13\\Pinakas\\Tests\\": "tests"
+            "Mimisk\\Pinakas\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Mimisk13\\Pinakas\\PinakasServiceProvider"
+                "Mimisk\\Pinakas\\PinakasServiceProvider"
             ],
             "aliases": {
-                "Pinakas": "Mimisk13\\Pinakas\\Facades\\Pinakas"
+                "Pinakas": "Mimisk\\Pinakas\\Facades\\Pinakas"
             }
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse",
+        "test": "pest",
+        "test:coverage": "pest --coverage"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }

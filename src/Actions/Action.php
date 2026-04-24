@@ -1,6 +1,6 @@
 <?php
 
-namespace Mimisk13\Pinakas\Actions;
+namespace Mimisk\Pinakas\Actions;
 
 class Action
 {
@@ -9,6 +9,7 @@ class Action
     public $method;
     public $class;
     public $icon;
+    public $route;
 
     public function __construct(array $attributes)
     {
@@ -17,11 +18,12 @@ class Action
         $this->method = $attributes['method'] ?? 'GET';
         $this->class = $attributes['class'] ?? '';
         $this->icon = $attributes['icon'] ?? null;
+        $this->route = $attributes['route'] ?? null;
     }
 
     public static function make(string $label): self
     {
-        return new self($label);
+        return new self(['label' => $label]);
     }
 
     public function url(string $url): self

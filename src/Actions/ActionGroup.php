@@ -1,6 +1,6 @@
 <?php
 
-namespace Mimisk13\Pinakas\Actions;
+namespace Mimisk\Pinakas\Actions;
 
 class ActionGroup
 {
