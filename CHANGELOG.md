@@ -2,7 +2,7 @@
 
 All notable changes to `Pinakas` will be documented in this file.
 
-## Unreleased
+## v0.0.1 - 2026-04-24
 
 ### Added
 - Pest test suite for package bootstrapping, fluent table configuration, bulk actions, empty states, and typed columns.
@@ -61,8 +61,3 @@ All notable changes to `Pinakas` will be documented in this file.
 - Table headers now support clickable sort toggles while preserving current query filters.
 - Bulk action toolbar now submits selected row IDs with proper method/url and optional confirmation.
 - Indigo hardcoded checkbox/pagination accents replaced with global UI accent color.
-
-## Version 1.0
-
-### Added
-- Everything
