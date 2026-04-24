@@ -307,6 +307,24 @@ Grouped actions:
 ])
 ```
 
+Custom action URLs may be generated directly or through named routes:
+
+```php
+Action::make('Open')
+    ->route('user.show', fn ($row) => ['user' => $row->id])
+```
+
+Destructive actions can show a confirmation modal before submit:
+
+```php
+Action::make('Delete')
+    ->url('/users/1')
+    ->method('DELETE')
+    ->confirm('Delete this user?')
+```
+
+`DeleteAction::make()` uses the Laravel-style `*.destroy` route name.
+
 ### Pagination
 
 Enable pagination:
@@ -599,7 +617,7 @@ class TestController extends Controller
 Route naming convention used by default actions:
 - `user.show`
 - `user.edit`
-- `user.delete`
+- `user.destroy`
 
 These are inferred from each row model class (example: `App\Models\User` -> `user.*`).
 

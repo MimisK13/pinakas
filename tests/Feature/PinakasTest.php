@@ -4,9 +4,14 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Mimisk\Pinakas\Actions\Action;
 use Mimisk\Pinakas\Actions\ActionGroup;
+use Mimisk\Pinakas\Actions\DeleteAction;
 use Mimisk\Pinakas\Bulk\BulkAction;
 use Mimisk\Pinakas\Columns\Column;
 use Mimisk\Pinakas\Pinakas;
+use Mimisk\Pinakas\Tests\Fixtures\PinakasUser;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 it('loads package config and views', function () {
     $views = app(ViewFactory::class);
@@ -153,6 +158,32 @@ it('renders single row actions', function () {
         ->toContain('Open');
 });
 
+it('renders route actions and destroy actions with confirmation hooks', function () {
+    Route::get('/users/{user}', fn () => null)->name('user.show');
+    Route::delete('/pinakas-users/{pinakasuser}', fn () => null)->name('pinakasuser.destroy');
+
+    $row = new PinakasUser(['name' => 'Mimis']);
+    $row->id = 1;
+
+    $table = tableWithRows([$row])
+        ->columns([
+            Column::make('Name', 'name'),
+        ])
+        ->actions([
+            Action::make('Open')->route('user.show', fn ($row) => ['user' => $row->id]),
+            DeleteAction::make(),
+        ]);
+
+    $html = view('pinakas::table', ['table' => $table])->render();
+
+    expect($html)
+        ->toContain('href="http://localhost/users/1"')
+        ->toContain('action="http://localhost/pinakas-users/1"')
+        ->toContain('name="_method" value="DELETE"')
+        ->toContain('x-on:submit.prevent.stop')
+        ->toContain('Are you sure you want to delete this record?');
+});
+
 it('renders grouped row actions', function () {
     $table = tableWithRows([(object) ['id' => 1, 'name' => 'Mimis']])
         ->columns([
@@ -188,4 +219,70 @@ function tableWithRows(array $rows): Pinakas
             return new Collection($this->rows);
         }
     };
+}
+
+it('applies search sort and pagination to eloquent queries', function () {
+    createPinakasUsersTable();
+
+    PinakasUser::query()->insert([
+        ['name' => 'Beta', 'email' => 'beta@example.com'],
+        ['name' => 'Alpha', 'email' => 'alpha@example.com'],
+        ['name' => 'Gamma', 'email' => 'gamma@example.com'],
+    ]);
+
+    request()->merge([
+        'search' => 'a',
+        'sort' => 'name',
+        'direction' => 'asc',
+        'per_page' => 2,
+    ]);
+
+    $rows = (new Pinakas)
+        ->model(PinakasUser::class)
+        ->columns([
+            Column::make('Name', 'name')->searchable()->sortable(),
+            Column::make('Email', 'email')->searchable(),
+        ])
+        ->searchable()
+        ->sortable()
+        ->paginate(10)
+        ->perPageOptions([2, 10])
+        ->getData();
+
+    expect($rows->total())->toBe(3)
+        ->and($rows->perPage())->toBe(2)
+        ->and(collect($rows->items())->pluck('name')->all())->toBe(['Alpha', 'Beta']);
+});
+
+it('falls back to all column attributes when no searchable columns are explicit', function () {
+    createPinakasUsersTable();
+
+    PinakasUser::query()->insert([
+        ['name' => 'Mimis', 'email' => 'mimis@example.com'],
+        ['name' => 'Other', 'email' => 'other@example.com'],
+    ]);
+
+    request()->merge(['search' => 'mimis@example.com']);
+
+    $rows = (new Pinakas)
+        ->model(PinakasUser::class)
+        ->columns([
+            Column::make('Name', 'name'),
+            Column::make('Email', 'email'),
+        ])
+        ->searchable()
+        ->getData();
+
+    expect($rows)->toHaveCount(1)
+        ->and($rows->first()->name)->toBe('Mimis');
+});
+
+function createPinakasUsersTable(): void
+{
+    Schema::dropIfExists('pinakas_users');
+    Schema::create('pinakas_users', function (Blueprint $table): void {
+        $table->id();
+        $table->string('name');
+        $table->string('email');
+    });
 }

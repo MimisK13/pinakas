@@ -1,10 +1,13 @@
 @php
     $itemClass = trim(($action->class ?? '') . ' ' . ($class ?? ''));
+    $actionUrl = method_exists($action, 'resolveUrl')
+        ? $action->resolveUrl($row)
+        : (is_callable($action->url) ? call_user_func($action->url, $row) : $action->url);
 @endphp
 
 @if ($action->method === 'GET')
     <a
-        href="{{ is_callable($action->url) ? call_user_func($action->url, $row) : $action->url }}"
+        href="{{ $actionUrl }}"
         class="{{ $itemClass }}"
         @if (!empty($role)) role="{{ $role }}" @endif
         @if (!empty($tabIndex)) tabindex="{{ $tabIndex }}" @endif
@@ -15,7 +18,14 @@
         {{ $action->label }}
     </a>
 @elseif ($action->method === 'DELETE')
-    <form action="{{ is_callable($action->url) ? call_user_func($action->url, $row) : $action->url }}" method="POST" class="{{ $formClass ?? 'inline' }}">
+    <form
+        action="{{ $actionUrl }}"
+        method="POST"
+        class="{{ $formClass ?? 'inline' }}"
+        @if (!empty($action->confirm))
+            x-on:submit.prevent.stop="submitRowAction($el, @js($action->confirm))"
+        @endif
+    >
         @csrf
         @method('DELETE')
         <button

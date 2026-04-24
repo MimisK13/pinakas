@@ -48,6 +48,9 @@ All notable changes to `Pinakas` will be documented in this file.
 - Rounded settings for pagination dropdowns and action controls via UI config and per-table methods.
 - Global default date/time formats via `columns.date_format` and `columns.time_format`.
 - Optional column header label in `make()` with auto-generated title from attribute.
+- Single row actions are supported alongside grouped row actions.
+- `Action::route()` and `Action::confirm()` for route-based URLs and confirmation modals.
+- Eloquent integration tests for search, sorting, and pagination.
 
 ### Changed
 - Package support now targets Laravel 11, 12, and 13. Laravel 10 support was removed.
@@ -60,4 +63,6 @@ All notable changes to `Pinakas` will be documented in this file.
 - Added dark mode styles across table controls and states.
 - Table headers now support clickable sort toggles while preserving current query filters.
 - Bulk action toolbar now submits selected row IDs with proper method/url and optional confirmation.
+- `DeleteAction` now uses the Laravel-style `*.destroy` route convention.
+- Row `DELETE` actions with confirmation now use the modal confirmation flow before submit.
 - Indigo hardcoded checkbox/pagination accents replaced with global UI accent color.

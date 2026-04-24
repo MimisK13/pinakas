@@ -12,6 +12,7 @@
                 rowIds: @js($bulkRowIds),
                 confirmMessage: '',
                 pendingAction: null,
+                pendingRowForm: null,
                 submitBulkAction(url, method, confirmMessage) {
                     if (!url || this.selected.length === 0) return;
 
@@ -23,6 +24,25 @@
                     }
 
                     this.executeBulkAction(url, method);
+                },
+                submitRowAction(form, confirmMessage) {
+                    if (!form) return;
+
+                    if (confirmMessage) {
+                        this.pendingRowForm = form;
+                        this.confirmMessage = confirmMessage;
+                        this.$refs.bulkConfirmDialog?.showModal();
+                        return;
+                    }
+
+                    this.executeRowAction(form);
+                },
+                executeRowAction(form) {
+                    if (!form) return;
+
+                    this.loading = true;
+
+                    form.submit();
                 },
                 executeBulkAction(url, method) {
                     if (!url || this.selected.length === 0) return;
@@ -40,22 +60,29 @@
                         form.submit();
                     }
                 },
-                confirmBulkAction() {
-                    if (!this.pendingAction) return;
+                confirmPendingAction() {
                     this.$refs.bulkConfirmDialog?.close();
-                    this.executeBulkAction(this.pendingAction.url, this.pendingAction.method);
-                    this.pendingAction = null;
+
+                    if (this.pendingAction) {
+                        this.executeBulkAction(this.pendingAction.url, this.pendingAction.method);
+                        this.pendingAction = null;
+                    } else if (this.pendingRowForm) {
+                        this.executeRowAction(this.pendingRowForm);
+                        this.pendingRowForm = null;
+                    }
+
                     this.confirmMessage = '';
                 },
-                cancelBulkAction() {
+                cancelPendingAction() {
                     this.$refs.bulkConfirmDialog?.close();
                     this.pendingAction = null;
+                    this.pendingRowForm = null;
                     this.confirmMessage = '';
                 }
             }"
             x-on:submit="loading = true"
             x-on:click="if ($event.target.closest('a[href]')) { loading = true }"
-            x-on:keydown.escape.window="cancelBulkAction()"
+            x-on:keydown.escape.window="cancelPendingAction()"
             class="relative rounded-sm shadow-xs"
             style="--pinakas-accent: {{ $table->getUiAccentColor() }};"
         > <!--- overflow-x-auto --->
@@ -243,7 +270,7 @@
                                 type="button"
                                 command="close"
                                 commandfor="{{ $bulkDialogId }}"
-                                x-on:click="confirmBulkAction()"
+                                x-on:click="confirmPendingAction()"
                                 class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto dark:bg-red-500 dark:shadow-none dark:hover:bg-red-400"
                             >
                                 Confirm
@@ -252,7 +279,7 @@
                                 type="button"
                                 command="close"
                                 commandfor="{{ $bulkDialogId }}"
-                                x-on:click="cancelBulkAction()"
+                                x-on:click="cancelPendingAction()"
                                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto dark:bg-white/10 dark:text-white dark:shadow-none dark:ring-white/5 dark:hover:bg-white/20"
                             >
                                 Cancel

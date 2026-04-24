@@ -12,11 +12,12 @@ class DeleteAction
             'label' => 'Delete',
             'url' => function ($row) {
                 $modelName = strtolower(class_basename($row));
-                return route(strtolower($modelName) . '.delete', [$modelName => $row->id]);
+                return route(strtolower($modelName) . '.destroy', [$modelName => $row->id]);
             },
             'method' => 'DELETE',
             'class' => 'text-red-500 hover:underline',
-            'icon' => Icon::delete()
+            'icon' => Icon::delete(),
+            'confirm' => 'Are you sure you want to delete this record?',
         ]);
     }
 }
