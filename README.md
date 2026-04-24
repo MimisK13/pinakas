@@ -4,6 +4,7 @@
     <a href="https://github.com/MimisK13/pinakas/actions/workflows/tests.yml"><img src="https://github.com/MimisK13/pinakas/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
     <a href="https://packagist.org/packages/mimisk/pinakas"><img src="https://img.shields.io/packagist/v/mimisk/pinakas.svg?style=flat-square" alt="Latest Version on Packagist"></a>
     <a href="https://packagist.org/packages/mimisk/pinakas"><img src="https://img.shields.io/packagist/dt/mimisk/pinakas.svg?style=flat-square" alt="Total Downloads"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="License: MIT"></a>
 </p>
 
 Pinakas is a simple, reusable Laravel table builder package focused on fast CRUD listings.
@@ -632,7 +633,7 @@ If you discover any security related issues, please email `mimisk88@gmail.com` i
 
 ## License
 
-MIT. Please see the [LICENSE file](LICENSE.md) for more information.
+MIT. Please see the [LICENSE file](LICENSE) for more information.
 
 [link-author]: https://github.com/MimisK13
 [link-contributors]: ../../contributors
